@@ -38,8 +38,34 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::controller(CategoryController::class)->group(function () {
         Route::get('/categories', 'index')->name('admin.category.index');
         Route::get('/categories/create', 'create')->name('admin.category.create');
+        Route::post('/category', 'store')->name('admin.category.store');
+        Route::get('/categories/edit/{category}/', 'edit')->name('admin.category.edit');
+        Route::patch('/categories/{category}/', 'update')->name('admin.category.update');
+        Route::delete('/categories/{category}/', 'destroy')->name('admin.category.destroy');
     });
 
 });
+
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
+    Route::controller(\App\Http\Controllers\Admin\BrandController::class)->group(function () {
+        Route::get('/brands', 'index')->name('admin.brand.index');
+        Route::get('/brands/create', 'create')->name('admin.brand.create');
+        Route::post('/brand', 'store')->name('admin.brand.store');
+        Route::get('/brands/edit/{brand}', 'edit')->name('admin.brand.edit');
+        Route::patch('/brands/{brand}/', 'update')->name('admin.brand.update');
+        Route::delete('/brands/{brand}/', 'destroy')->name('admin.brand.destroy');
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
 
 

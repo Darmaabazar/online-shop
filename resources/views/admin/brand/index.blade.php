@@ -7,8 +7,8 @@
                 <div class="card my-4">
                     <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-                            <h6 class="text-white text-capitalize ps-3">Categories</h6>
-                            <a href="{{route('admin.category.create')}}" class="btn btn-dark me-4">Create</a>
+                            <h6 class="text-white text-capitalize ps-3">Brands</h6>
+                            <a href="{{route('admin.brand.create')}}" class="btn btn-dark me-4">Create</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pb-2">
@@ -25,7 +25,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($categories as $item)
+                                @foreach($brands as $item)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -36,9 +36,6 @@
                                                     <h6 class="mb-0 text-sm">{{$item->name}}</h6>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">{{$item->slug}}</p>
                                         </td>
                                         <td class="align-middle text-center text-sm">
                                             @if($item->status === 1)
@@ -56,7 +53,7 @@
                                             <span class="text-secondary text-xs font-weight-bold">{{$item->updated_at}}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{route('admin.category.edit', ['category'=> $item->id ])}}" class="btn btn-dark me-4">Edit</a>
+                                            <a href="{{route('admin.brand.edit'), ['brand'=>$item->id ]}}" class="btn btn-dark me-4">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach

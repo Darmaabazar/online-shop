@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -21,38 +22,81 @@ class CategoryController extends Controller
         $validateData = $request->validate([
             'name' => 'required|unique:categories|max:255',
             'slug' => 'required|unique:categories|max:255',
-            'status' => 'required|boolean',
-            'image' => 'mimes:jpeg,jpg,png,gif,webp|required|max:10000'
+            'status' => 'nullable',
+            'image' => 'image|mimes:jpeg,jpg,png,gif,webp|required|max:10000'
         ]);
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('admin/assets/category/images'), $imageName);
-            $validateData['image'] = 'admin/assets/category/images'.$imageName;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $image->move(public_path('uploads/categories'), $imageName);
+            $validateData['image'] = 'uploads/categories/'.$imageName;
         }
         else {
             $validateData['image'] = null;
         }
 
-        Category::query()->create($validateData);
+        Category::query()->create([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'status' => ($request->status === 'on') ? 1 : 0,
+            'image' => $validateData['image']
+        ]);
 
         return redirect('/admin/categories')->with('success', 'Category has been created');
     }
 
-    public function show($id) {
-
-    }
-
-    public function edit($id) {
-
+    public function edit(Request $request) {
+        $category = Category::all()->find($request->id);
+        return view('admin.category.edit', compact('category'));
     }
 
     public function update(Request $request, $id) {
+        $validateData = $request->validate([
+            'name' => 'required|unique:categories|max:255',
+            'slug' => 'required|unique:categories|max:255',
+            'status' => 'nullable',
+            'image' => 'image|mimes:jpeg,jpg,png,gif,webp|required|max:10000'
+        ]);
 
+        $category = Category::query()->findOrFail($id);
+
+        if ($request->hasFile('image')) {
+            $destination = $category -> image;
+
+            if(File::exists($destination)) {
+                File::delete($destination);
+            }
+
+            $image = $request->file('image');
+            $ext = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $image->move(public_path('uploads/categories'), $imageName);
+            $validateData['image'] = 'uploads/categories/'.$imageName;
+        } else {
+            $validateData['image'] = $category->image;
+        }
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'status' => ($request->status === 'on') ? 1 : 0,
+            'image' => $validateData['image']
+        ]);
+        return redirect('/admin/categories/')->with('success', 'Category has been updated');
     }
 
     public function destroy($id) {
+        $category = Category::query()->findOrFail($id);
 
+        $destination = $category -> image;
+
+        if(File::exists($destination)) {
+            File::delete($destination);
+        }
+
+        $category->delete();
+        return redirect('/admin/categories/')->with('success', 'Category has been deleted');
     }
 }

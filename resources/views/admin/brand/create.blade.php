@@ -4,11 +4,11 @@
     <div class="my-5 mx-3 p-4 bg-white shadow rounded-3">
         <div class="card-header p-0 position-relative mt-n5 mx-n2 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between align-items-center">
-                <h6 class="text-white text-capitalize ps-3">Category Create</h6>
-                <a href="{{route('admin.category.index')}}" class="btn btn-dark me-4">Back</a>
+                <h6 class="text-white text-capitalize ps-3">Brand Create</h6>
+                <a href="{{route('admin.brand.index')}}" class="btn btn-dark me-4">Back</a>
             </div>
         </div>
-        <form action="{{route('admin.category.store')}}" method="post" class="mt-5" enctype="multipart/form-data">
+        <form action="{{route('admin.brand.store')}}" method="post" class="mt-5" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-3">
@@ -16,13 +16,6 @@
                 <input name="name" value="{{old('name')}}" type="text" class="form-control border px-2" id="name" aria-describedby="emailHelp" placeholder="name">
                 @error('name')
                     <small class="text-danger">{{$message}}</small>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label for="slug" class="form-label">Slug</label>
-                <input name="slug" value="{{old('slug')}}" type="text" class="form-control border px-2" id="slug" aria-describedby="emailHelp" placeholder="slug">
-                @error('slug')
-                <small class="text-danger">{{$message}}</small>
                 @enderror
             </div>
             <div class="mb-3">
