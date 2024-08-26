@@ -8,7 +8,7 @@
                 <a href="{{route('admin.brand.index')}}" class="btn btn-dark me-4">Back</a>
             </div>
         </div>
-        <form action="{{route('admin.brand.update', ['brand'=> $brand->id ])}}" method="post" class="mt-5" enctype="multipart/form-data">
+        <form action="{{route('admin.brand.update', ['brand'=> $brand])}}" method="post" class="mt-5" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
 
@@ -27,11 +27,13 @@
                 <input name="status" type="checkbox" class="form-check-input border" id="status" value="{{$brand->status}}">
                 <label class="form-check-label" for="status">Status</label>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="d-flex justify-content-between items-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button form="delete-form" type="submit" class="btn btn-primary">Delete</button>
+            </div>
         </form>
-        <button form="delete-form" type="submit" class="btn btn-primary">Delete</button>
     </div>
-    <form method="POST" action="/brands/{{ $brand->id }}" id="delete-form" class="hidden">
+    <form method="POST" action="{{route('admin.brand.destroy', ['brand' => $brand])}}" id="delete-form" class="hidden">
         @csrf
         @method("DELETE")
     </form>

@@ -39,9 +39,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
         Route::get('/categories', 'index')->name('admin.category.index');
         Route::get('/categories/create', 'create')->name('admin.category.create');
         Route::post('/category', 'store')->name('admin.category.store');
-        Route::get('/categories/edit/{category}/', 'edit')->name('admin.category.edit');
-        Route::patch('/categories/{category}/', 'update')->name('admin.category.update');
-        Route::delete('/categories/{category}/', 'destroy')->name('admin.category.destroy');
+        Route::get('/categories/edit/{category}', 'edit')->name('admin.category.edit');
+        Route::patch('/categories/{category}', 'update')->name('admin.category.update');
+        Route::delete('/categories/{category}', 'destroy')->name('admin.category.destroy');
     });
 
 });
@@ -57,6 +57,19 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     });
 
 });
+
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
+    Route::controller(\App\Http\Controllers\Admin\ProductController::class)->group(function () {
+        Route::get('/products', 'index')->name('admin.product.index');
+        Route::get('/products/create', 'create')->name('admin.product.create');
+        Route::post('/product', 'store')->name('admin.product.store');
+        Route::get('/products/edit/{product}', 'edit')->name('admin.product.edit');
+        Route::patch('/products/{product}/', 'update')->name('admin.product.update');
+        Route::delete('/products/{product}/', 'destroy')->name('admin.product.destroy');
+    });
+
+});
+
 
 
 

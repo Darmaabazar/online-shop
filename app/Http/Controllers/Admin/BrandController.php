@@ -20,9 +20,9 @@ class BrandController extends Controller
 
     public function store(Request $request) {
         $validateData = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:brands|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'required',
+            'status' => 'nullable',
         ]);
 
         if ($request->hasFile('image')) {
@@ -38,26 +38,25 @@ class BrandController extends Controller
 
         Brand::query()->create([
             'name' => $request->name,
-            'status' => ($request->status === 'on') ? 1 : 0,
+            'status' => ($validateData['status'] === 'on') ? 1 : 0,
             'image' => $validateData['image']
         ]);
 
         return redirect('/admin/brands')->with('success', 'Brand has been created');
     }
 
-    public function edit($id) {
-        $brand = Brand::query()->findOrFail($id);
+    public function edit(Brand $brand) {
         return view('admin.brand.edit', compact('brand'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $brand) {
         $validateData = $request->validate([
             'name' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status' => 'required',
+            'status' => 'nullable',
         ]);
 
-        $brand = Brand::query()->findOrFail($id);
+        $brand = Brand::query()->findOrFail($brand);
 
         if ($request->hasFile('image')) {
             $destination = $brand -> image;
@@ -74,11 +73,13 @@ class BrandController extends Controller
         else {
             $validateData['image'] = null;
         }
+
         $brand->update([
             'name' => $request->name,
-            'status' => ($request->status === 'on') ? 1 : 0,
+            'status' => ($validateData['status'] === 'on') ? 1 : 0,
             'image' => $validateData['image']
         ]);
+
         return redirect('/admin/brands')->with('success', 'Brand has been updated');
     }
     public function destroy($id) {

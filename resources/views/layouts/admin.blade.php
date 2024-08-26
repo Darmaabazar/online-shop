@@ -24,6 +24,9 @@
 
     <!-- CSS Files -->
     <link id="pagestyle" href="{{asset('admin/assets/css/material-dashboard.css?v=3.1.0')}}" rel="stylesheet" />
+
+    {{--  TailwindCss, AlpineJs  --}}
+    @vite(['resources/js/app.js'])
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">

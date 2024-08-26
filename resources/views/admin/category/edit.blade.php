@@ -34,11 +34,14 @@
                 <input name="status" type="checkbox" class="form-check-input border" id="status" value="{{$category->status}}">
                 <label class="form-check-label" for="status">Status</label>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
+            <div class="d-flex justify-content-between items-center">
+
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button form="delete-form" type="submit" class="btn btn-primary">Delete</button>
+            </div>
         </form>
-        <button form="delete-form" type="submit" class="btn btn-primary">Delete</button>
     </div>
-        <form method="POST" action="/categories/{{ $category->id }}" id="delete-form" class="hidden">
+        <form method="POST" action="{{route('admin.category.destroy', ['category'=> $category ])}}" id="delete-form" class="hidden">
             @csrf
             @method("DELETE")
         </form>

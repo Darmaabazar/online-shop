@@ -40,19 +40,18 @@ class CategoryController extends Controller
         Category::query()->create([
             'name' => $request->name,
             'slug' => $request->slug,
-            'status' => ($request->status === 'on') ? 1 : 0,
+            'status' => ($validateData['status'] === 'on') ? 1 : 0,
             'image' => $validateData['image']
         ]);
 
         return redirect('/admin/categories')->with('success', 'Category has been created');
     }
 
-    public function edit(Request $request) {
-        $category = Category::all()->find($request->id);
+    public function edit(Request $request, Category $category) {
         return view('admin.category.edit', compact('category'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $category) {
         $validateData = $request->validate([
             'name' => 'required|unique:categories|max:255',
             'slug' => 'required|unique:categories|max:255',
@@ -60,7 +59,7 @@ class CategoryController extends Controller
             'image' => 'image|mimes:jpeg,jpg,png,gif,webp|required|max:10000'
         ]);
 
-        $category = Category::query()->findOrFail($id);
+        $category = Category::query()->find($category);
 
         if ($request->hasFile('image')) {
             $destination = $category -> image;
@@ -81,7 +80,7 @@ class CategoryController extends Controller
         $category->update([
             'name' => $request->name,
             'slug' => $request->slug,
-            'status' => ($request->status === 'on') ? 1 : 0,
+            'status' => ($validateData['status'] === 'on') ? 1 : 0,
             'image' => $validateData['image']
         ]);
         return redirect('/admin/categories/')->with('success', 'Category has been updated');
